@@ -83,11 +83,54 @@ select{font:inherit;padding:10px;border-radius:10px;border:2px solid var(--line)
 .res{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
 .res a{display:block;border:2px solid var(--line);border-radius:12px;padding:12px;text-decoration:none;color:var(--ink)}
 .res a:hover{border-color:var(--blue)}
+.input{font:inherit;font-size:18px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);width:100%;background:#fff}
+.join{display:grid;gap:12px;max-width:460px}
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:var(--muted);font-weight:600}
+.timer{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:18px}
+.timer div{height:100%;background:var(--yellow);width:100%}
+.qtext{font-size:clamp(20px,3vw,28px);font-weight:800;margin:0 0 18px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{font:inherit;font-size:18px;font-weight:600;padding:18px;border-radius:14px;border:0;color:#fff;cursor:pointer;text-align:left;min-height:80px;transition:.2s}
+.opt:nth-child(1){background:#1a3fa0}.opt:nth-child(2){background:#c73d3d}.opt:nth-child(3){background:#d99a00}.opt:nth-child(4){background:#14a06b}
+.opt.dim{opacity:.3}.opt.right{outline:4px solid var(--ink);outline-offset:2px}
+.big{font-size:56px;font-weight:800;color:var(--blue);margin:6px 0}
+.lb{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;max-width:620px}
+.lb li{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;background:#f5f8ff;font-size:18px}
+.lb li.me{background:var(--yellow);font-weight:800}
+.lb .r{font-weight:800;width:32px;color:var(--blue)}
+.lb .nm{flex:1}
+.lb small{color:var(--muted);font-weight:400}
+.warn{background:#ffe3e3;border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:14px}
+#screen{display:none;min-height:100vh;background:radial-gradient(circle at 80% 10%,#2c56c9 0,var(--deep) 65%);color:#fff;padding:30px 40px}
+body.screen header,body.screen main,body.screen footer{display:none}
+body.screen #screen{display:block}
+.sc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:30px}
+.sc-top h1{font-size:64px}
+.sc-qr{background:#fff;border-radius:18px;padding:14px;color:var(--ink);text-align:center;font-weight:600}
+.sc-qr img{width:200px;height:200px;display:block}
+.podium{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:18px;align-items:end;margin:30px 0}
+.pod{background:rgba(255,255,255,.1);border-radius:18px 18px 0 0;text-align:center;padding:18px 10px}
+.pod .pl{font-size:48px;font-weight:800;color:var(--yellow)}
+.pod .pn{font-size:30px;font-weight:800}
+.pod .ps{opacity:.85;font-size:20px}
+.pod.p1{min-height:260px;background:rgba(255,204,0,.22)}.pod.p2{min-height:210px}.pod.p3{min-height:170px}
+.sc-list{columns:2;column-gap:30px;font-size:22px}
+.sc-list div{break-inside:avoid;display:flex;justify-content:space-between;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.15)}
+.sc-meta{opacity:.75;font-size:18px;margin-top:10px}
+@media (max-width:600px){.opts{grid-template-columns:1fr}}
 footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 30px}
 @media (max-width:820px){.two{grid-template-columns:1fr}.qr{display:none}}
 </style>
 </head>
 <body>
+<div id="screen">
+  <div class="sc-top">
+    <div><div class="brand">Boğazlıyan MYO · Erasmus+ Bilgi Günü</div><h1>Erasmus+ <span>Yarışması</span></h1><div class="sc-meta" id="scMeta">Bağlanıyor…</div></div>
+    <div class="sc-qr"><img id="scQr" alt="Katılım QR kodu">Telefonla katıl</div>
+  </div>
+  <div class="podium" id="podium"></div>
+  <div class="sc-list" id="scList"></div>
+</div>
 <header>
   <div class="wrap top">
     <div>
@@ -101,9 +144,37 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 30px}
 </header>
 
 <main>
-  <div class="steps"><div class="on"></div><div></div><div></div><div></div></div>
+  <div class="warn" id="dbWarn" style="display:none">Test modu: Firebase adresi girilmedi, puanlar sadece bu cihazda tutuluyor.</div>
+  <div class="steps" id="steps" style="display:none"><div class="on"></div><div></div><div></div><div></div></div>
 
-  <section class="panel show" id="p1">
+  <section class="panel show" id="g0">
+    <h2>Erasmus+ Yarışması</h2>
+    <p class="sub">10 soru, her biri 15 saniye. Doğru ve hızlı cevap daha çok puan getirir. En yüksek puanlar büyük ekranda!</p>
+    <div class="join">
+      <input class="input" id="pname" maxlength="24" placeholder="Adın Soyadın" autocomplete="off">
+      <select class="input" id="pprog"></select>
+      <button class="btn" onclick="startGame()">Yarışmaya başla</button>
+    </div>
+    <p class="sub" style="margin-top:18px">Yarışmadan devam etmek istersen <a href="#" onclick="go(1);return false">doğrudan rotanı bul</a>.</p>
+  </section>
+
+  <section class="panel" id="g1">
+    <div class="qhead"><span id="qnum"></span><span id="qscore"></span></div>
+    <div class="timer"><div id="tbar"></div></div>
+    <p class="qtext" id="qtext"></p>
+    <div class="opts" id="opts"></div>
+  </section>
+
+  <section class="panel" id="g2">
+    <h2>Tebrikler, <span id="rname"></span>!</h2>
+    <div class="big" id="rscore"></div>
+    <p class="sub" id="rinfo"></p>
+    <h3>Canlı sıralama</h3>
+    <ol class="lb" id="lbMine"></ol>
+    <div class="row"><button class="btn" onclick="goRoute()">Ödülün: Erasmus rotanı keşfet</button></div>
+  </section>
+
+  <section class="panel" id="p1">
     <h2>1. Bölümün hangisi?</h2>
     <p class="sub">Boğazlıyan MYO programları</p>
     <div class="grid" id="programs"></div>
@@ -174,6 +245,36 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 30px}
 
 <script>
 /* ====== AYARLAR ====== */
+// Firebase Realtime Database adresi (sonunda / olmadan). Boş bırakılırsa test modunda çalışır.
+const DB_URL = "https://erasmus-30acf-default-rtdb.europe-west1.firebasedatabase.app";
+const Q_TIME = 15, Q_COUNT = 10;
+const params = new URLSearchParams(location.search);
+const SESSION = (params.get("oturum") || "bilgi-gunu").replace(/[^a-zA-Z0-9-]/g, "");
+const JOIN_URL = location.origin + location.pathname + (params.get("oturum") ? "?oturum=" + SESSION : "");
+
+/* Soru havuzu: ilk şık doğru cevaptır, ekranda karıştırılır */
+const QUESTIONS = [
+ {q:"Erasmus+ hangi kurumun programıdır?", a:["Avrupa Birliği","Birleşmiş Milletler","NATO","UNESCO"]},
+ {q:"Türkiye'de Erasmus+ programını hangi kurum yürütür?", a:["Türkiye Ulusal Ajansı","YÖK","Milli Eğitim Bakanlığı","Dışişleri Bakanlığı"]},
+ {q:"Erasmus adını nereden alır?", a:["Hollandalı düşünür Rotterdamlı Erasmus","Bir Yunan tanrısı","Programı kuran bir bakan","Bir Roma imparatoru"]},
+ {q:"Erasmus programı ilk kez hangi yıl başladı?", a:["1987","1999","2004","2014"]},
+ {q:"Uzun dönem Erasmus+ öğrenci stajı en az ne kadar sürer?", a:["2 ay","2 hafta","6 ay","1 yıl"]},
+ {q:"Avrupa standardında CV hazırlamak için hangi araç kullanılır?", a:["Europass","E-Devlet","Kariyer Kapısı","Erasmus Pass"]},
+ {q:"MYO (ön lisans) öğrencileri Erasmus+'tan yararlanabilir mi?", a:["Evet, öğrenim ve staj için başvurabilir","Hayır, sadece lisans öğrencileri","Sadece mezun olduktan sonra","Sadece yüksek lisansta"]},
+ {q:"Yeni mezun stajı, mezuniyetten sonra en geç ne zamana kadar tamamlanmalı?", a:["1 yıl içinde","1 ay içinde","5 yıl içinde","Süre sınırı yok"]},
+ {q:"Hangisi Erasmus+'a katılan ama AB üyesi olmayan bir ülkedir?", a:["Norveç","Portekiz","Estonya","Malta"]},
+ {q:"Avrupa Birliği bayrağında kaç yıldız vardır?", a:["12","27","10","15"]},
+ {q:"Hangi ülkenin para birimi Euro değildir?", a:["Polonya","Hırvatistan","Estonya","Slovenya"]},
+ {q:"AB kurumlarının çoğu hangi şehirdedir?", a:["Brüksel","Paris","Cenevre","Viyana"]},
+ {q:"Erasmus+ aylık hibe miktarını en çok ne belirler?", a:["Gidilen ülkenin yaşam maliyeti","Öğrencinin yaşı","Bölümün türü","Şehrin nüfusu"]},
+ {q:"Türkiye'de Erasmus+ öğrenci seçiminde genelde ne esas alınır?", a:["Not ortalaması ve yabancı dil puanı","Sadece mülakat","Kura","Sadece sınıf düzeyi"]},
+ {q:"\"Learning Agreement\" nedir?", a:["Yurt dışında yapılacak ders veya staj planını onaylayan belge","Vize başvuru formu","Kira sözleşmesi","Sağlık sigortası poliçesi"]},
+ {q:"Hangisi Erasmus+ 2021-2027 önceliklerinden biri değildir?", a:["Askeri eğitim","Dijital dönüşüm","Yeşil dönüşüm","Kapsayıcılık"]},
+ {q:"Resmi dillerinden biri İngilizce olan Erasmus+ ülkesi hangisidir?", a:["Malta","Portekiz","Macaristan","Letonya"]},
+ {q:"Avusturya'nın resmi dili nedir?", a:["Almanca","Fransızca","İtalyanca","Macarca"]},
+ {q:"Avrupa'da gönüllülük projeleri için AB'nin programı hangisidir?", a:["Avrupa Dayanışma Programı","Horizon Europe","Schengen","Interrail"]},
+ {q:"Daha az fırsata sahip öğrenciler Erasmus+'ta ne alabilir?", a:["Ek hibe desteği","Hiçbir şey, başvuramazlar","Sadece online katılım","Daha kısa süreli hareketlilik zorunluluğu"]}
+];
 const APPLY_URL = "https://bozok.edu.tr/okul/bogazliyan-myo/sayfa/degisim-programlari-koordinatorlugu/12771";
 
 /* ====== VERİLER (kolayca düzenlenebilir) ====== */
@@ -276,7 +377,11 @@ let reqId = 0;
 
 /* ====== BAŞLANGIÇ ====== */
 document.querySelectorAll(".applyLink").forEach(a =>a.href = APPLY_URL);
-$("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=" + encodeURIComponent(location.href.split("#")[0]);
+const qr = size => `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=0&data=${encodeURIComponent(JOIN_URL)}`;
+$("#qr").src = qr(240);
+if (!DB_URL) $("#dbWarn").style.display = "block";
+$("#pprog").innerHTML = `<option value="">Bölümünü seç</option>` + Object.entries(PROGRAMS).map(([k,p])=>`<option value="${k}">${esc(p.name)}</option>`).join("");
+$("#pname").addEventListener("keydown", e => { if (e.key === "Enter") startGame(); });
 (function stars(){ let g=""; for(let i=0;i<12;i++){const a=i*Math.PI/6; g+=`<circle cx="${100+80*Math.cos(a)}" cy="${100+80*Math.sin(a)}" r="9"/>`;} $("#starring").innerHTML=g; })();
 
 $("#programs").innerHTML = Object.entries(PROGRAMS).map(([k,p]) =>
@@ -289,11 +394,14 @@ $("#anyCountry").innerHTML = `<option value="">Ülke listesi…</option>` +
   [...COUNTRIES].sort((a,b)=>a.n.localeCompare(b.n,"tr")).map(c=>`<option value="${c.k}">${esc(c.n)}</option>`).join("");
 
 /* ====== ADIMLAR ====== */
-function go(n){
-  document.querySelectorAll(".panel").forEach((p,i)=>p.classList.toggle("show", i===n-1));
+function show(id){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("show", p.id===id));
+  const n = id[0]==="p" ? +id.slice(1) : 0;
+  $("#steps").style.display = n ? "flex" : "none";
   document.querySelectorAll(".steps div").forEach((d,i)=>d.classList.toggle("on", i<n));
   window.scrollTo({top:0,behavior:"smooth"});
 }
+function go(n){ show("p"+n); }
 function restart(){
   state.program=null; state.interests.clear();
   document.querySelectorAll("#interests .chip").forEach(c=>c.classList.remove("on"));
@@ -438,6 +546,123 @@ function render(){
   $("#more").innerHTML = all.length >state.shown
     ? `<button class="btn ghost" onclick="state.shown+=PAGE;render()">Daha fazla göster (${all.length - state.shown})</button>` : "";
 }
+
+/* ====== YARIŞMA ====== */
+const game = {name:"", prog:"", qs:[], i:0, score:0, correct:0, timer:null, start:0, locked:false, id:null};
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0; [a[i],a[j]]=[a[j],a[i]];} return a; };
+
+function startGame(){
+  const name = $("#pname").value.trim().replace(/\s+/g," ").slice(0,24);
+  const prog = $("#pprog").value;
+  $("#pname").style.borderColor = name.length<2 ? "#c73d3d" : "";
+  $("#pprog").style.borderColor = !prog ? "#c73d3d" : "";
+  if (name.length<2 || !prog) return;
+  Object.assign(game, {name, prog, i:0, score:0, correct:0, id:null});
+  game.qs = shuffle(QUESTIONS).slice(0,Q_COUNT).map(q=>({q:q.q, opts:shuffle(q.a), ans:q.a[0]}));
+  show("g1"); nextQ();
+}
+function nextQ(){
+  if (game.i >= game.qs.length) return finish();
+  const q = game.qs[game.i]; game.locked = false;
+  $("#qnum").textContent = `Soru ${game.i+1} / ${game.qs.length}`;
+  $("#qscore").textContent = `${game.score} puan`;
+  $("#qtext").textContent = q.q;
+  $("#opts").innerHTML = q.opts.map((o,j)=>`<button class="opt" onclick="answer(${j})">${esc(o)}</button>`).join("");
+  game.start = performance.now(); clearInterval(game.timer);
+  game.timer = setInterval(()=>{
+    const left = Q_TIME - (performance.now()-game.start)/1000;
+    $("#tbar").style.width = Math.max(0, left/Q_TIME*100) + "%";
+    if (left <= 0) answer(-1);
+  }, 100);
+}
+function answer(j){
+  if (game.locked) return; game.locked = true; clearInterval(game.timer);
+  const q = game.qs[game.i];
+  const left = Math.max(0, Q_TIME - (performance.now()-game.start)/1000);
+  const ok = j>=0 && q.opts[j]===q.ans;
+  if (ok) { game.correct++; game.score += 500 + Math.round(500*left/Q_TIME); }
+  document.querySelectorAll(".opt").forEach((b,k)=>b.classList.add(q.opts[k]===q.ans ? "right" : "dim"));
+  $("#qscore").textContent = (ok ? "Doğru!" : j<0 ? "Süre doldu" : "Yanlış") + ` · ${game.score} puan`;
+  game.i++; setTimeout(nextQ, 1500);
+}
+async function finish(){
+  show("g2");
+  $("#rname").textContent = game.name;
+  $("#rscore").textContent = game.score + " puan";
+  $("#rinfo").textContent = `${game.qs.length} sorudan ${game.correct} doğru.`;
+  $("#lbMine").innerHTML = `<li>Sıralama yükleniyor…</li>`;
+  game.id = await saveScore({name:game.name, prog:PROGRAMS[game.prog].name, score:game.score, correct:game.correct, t:Date.now()});
+  refreshMine();
+}
+function goRoute(){ state.program = game.prog; go(2); }
+
+/* ====== PUAN TABLOSU ====== */
+const LKEY = "erasmus-lb-" + SESSION;
+async function saveScore(rec){
+  if (!DB_URL) {
+    const id = "l" + Date.now();
+    try { const a = JSON.parse(localStorage.getItem(LKEY)||"{}"); a[id]=rec; localStorage.setItem(LKEY, JSON.stringify(a)); } catch(e){}
+    return id;
+  }
+  try {
+    const r = await fetch(`${DB_URL}/yarisma/${SESSION}.json`, {method:"POST", body:JSON.stringify(rec)});
+    return (await r.json()).name;
+  } catch(e) { return null; }
+}
+async function loadScores(){
+  if (!DB_URL) { try { return JSON.parse(localStorage.getItem(LKEY)||"{}"); } catch(e){ return {}; } }
+  const r = await fetch(`${DB_URL}/yarisma/${SESSION}.json`);
+  if (!r.ok) throw new Error("db");
+  return (await r.json()) || {};
+}
+function board(obj){
+  const best = {};
+  for (const [id,r] of Object.entries(obj||{})) {
+    if (!r || typeof r.score!=="number" || !r.name) continue;
+    const k = String(r.name).toLowerCase();
+    if (!best[k] || r.score > best[k].score) best[k] = {...r, id};
+  }
+  return Object.values(best).sort((a,b)=>b.score-a.score || a.t-b.t);
+}
+async function refreshMine(){
+  try {
+    const list = board(await loadScores());
+    const me = list.findIndex(x => String(x.name).toLowerCase() === game.name.toLowerCase());
+    if (me >= 0) $("#rinfo").textContent += ` ${list.length} yarışmacı arasında ${me+1}. sıradasın.`;
+    const rows = list.slice(0,5).map((x,i)=>[i,x]);
+    if (me >= 5) rows.push([me, list[me]]);
+    $("#lbMine").innerHTML = rows.map(([i,x])=>`<li class="${i===me?"me":""}"><span class="r">${i+1}</span><span class="nm">${esc(x.name)} <small>${esc(x.prog)}</small></span><b>${x.score}</b></li>`).join("");
+  } catch(e) { $("#lbMine").innerHTML = `<li>Sıralama yüklenemedi.</li>`; }
+}
+
+/* ====== PROJEKSİYON EKRANI (?ekran) ====== */
+function renderScreen(list){
+  const top = list.slice(0,3);
+  $("#podium").innerHTML = [1,0,2].map(i=>{
+    const x = top[i];
+    return `<div class="pod p${i+1}"><div class="pl">${i+1}</div>${x
+      ? `<div class="pn">${esc(x.name)}</div><div class="ps">${x.score} puan</div><div class="ps" style="font-size:15px">${esc(x.prog)}</div>`
+      : `<div class="ps">Bekleniyor…</div>`}</div>`;
+  }).join("");
+  $("#scList").innerHTML = list.slice(3,15).map((x,i)=>`<div><span>${i+4}. ${esc(x.name)}</span><b>${x.score}</b></div>`).join("");
+  $("#scMeta").textContent = `${list.length} yarışmacı · canlı güncelleniyor`;
+}
+function initScreen(){
+  document.body.classList.add("screen");
+  $("#scQr").src = qr(400);
+  const draw = async () => {
+    try { renderScreen(board(await loadScores())); }
+    catch(e) { $("#scMeta").textContent = "Bağlantı sorunu, tekrar deneniyor…"; }
+  };
+  draw();
+  if (DB_URL && window.EventSource) {
+    let tm; const h = () => { clearTimeout(tm); tm = setTimeout(draw, 400); };
+    const es = new EventSource(`${DB_URL}/yarisma/${SESSION}.json`);
+    es.addEventListener("put", h); es.addEventListener("patch", h);
+  }
+  setInterval(draw, DB_URL ? 15000 : 3000);
+}
+if (params.has("ekran")) initScreen();
 </script>
 </body>
 </html>
