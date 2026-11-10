@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Erasmus+ Rotam</title>
+<meta name="description" content="Boğazlıyan MYO öğrencileri için Erasmus+ staj ve eğitim rotası bulucu">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1a3fa0; --deep:#0b1f5c; --yellow:#ffcc00; --ink:#14182b; --muted:#5b6380;
+  --card:#ffffff; --bg:#eef2fb; --line:#dbe2f3; --ok:#14a06b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Outfit,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--blue)}
+header{background:radial-gradient(circle at 80% 20%,#2c56c9 0,var(--deep) 60%);color:#fff;padding:28px 16px 70px;position:relative;overflow:hidden}
+.wrap{max-width:1100px;margin:0 auto}
+.top{display:flex;justify-content:space-between;gap:20px;align-items:center}
+.brand{font-size:14px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+h1{font-size:clamp(32px,6vw,58px);margin:8px 0 6px;line-height:1.05}
+h1 span{color:var(--yellow)}
+.lead{font-size:clamp(16px,2.2vw,20px);opacity:.9;max-width:620px;margin:0}
+.qr{background:#fff;border-radius:14px;padding:10px;text-align:center;color:var(--ink);font-size:12px;flex-shrink:0}
+.qr img{display:block;width:120px;height:120px}
+.stars{position:absolute;right:-60px;bottom:-90px;width:300px;opacity:.18}
+main{max-width:1100px;margin:-44px auto 40px;padding:0 16px;position:relative}
+.steps{display:flex;gap:8px;margin-bottom:16px}
+.steps div{flex:1;height:8px;border-radius:9px;background:#c9d3ee;transition:.3s}
+.steps div.on{background:var(--yellow)}
+.panel{background:var(--card);border-radius:22px;padding:24px;box-shadow:0 10px 30px rgba(11,31,92,.10);display:none;animation:fade .35s ease}
+.panel.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h2{margin:0 0 4px;font-size:26px}
+h3{margin:0 0 10px;font-size:20px}
+.sub{color:var(--muted);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.prog{border:2px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;background:#fff;text-align:left;font:inherit;transition:.2s}
+.prog:hover{border-color:var(--blue);transform:translateY(-2px)}
+.prog .e{font-size:34px}
+.prog b{display:block;font-size:17px}
+.prog{border-top:4px solid var(--blue)}
+.prog small{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:10px 16px;font:inherit;font-size:16px;cursor:pointer;transition:.15s}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:20px}
+.btn{background:var(--yellow);color:var(--deep);border:0;border-radius:12px;padding:12px 22px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.ghost{background:transparent;border:2px solid var(--line);color:var(--ink);font-weight:600}
+.countries{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.cc{border:2px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:.2s;background:#fff}
+.cc:hover{border-color:var(--blue);transform:translateY(-3px)}
+.cc .flag{height:120px;background-size:cover;background-position:center;position:relative}
+.cc .rank{position:absolute;top:10px;left:10px;background:var(--deep);color:var(--yellow);font-weight:800;border-radius:10px;padding:4px 10px}
+.cc .fit{position:absolute;top:10px;right:10px;background:#fff;color:var(--ok);font-weight:800;border-radius:10px;padding:4px 10px}
+.cc .body{padding:14px}
+.cc h3{margin:0 0 6px;font-size:22px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tag{background:#eef2fb;border-radius:8px;padding:3px 8px;font-size:13px}
+.facts{color:var(--muted);font-size:14px;line-height:1.5}
+select{font:inherit;padding:10px;border-radius:10px;border:2px solid var(--line)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.box{border-radius:16px;padding:16px 18px;background:#f5f8ff;border:2px solid var(--line)}
+.box.career{background:#fffbe8;border-color:#f3e3a0}
+.box ul{margin:0;padding-left:20px;line-height:1.7}
+.hero-apply{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;background:var(--deep);color:#fff;border-radius:16px;padding:16px 18px;margin-bottom:22px}
+.hero-apply p{margin:0;opacity:.9}
+.cities{margin:6px 0 14px}
+.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.inst{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.item{border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;background:#fff}
+.item b{font-size:17px}
+.item .k{font-size:13px;color:var(--muted)}
+.item .links{font-size:14px;display:flex;gap:12px;flex-wrap:wrap;margin-top:auto;padding-top:6px;align-items:center}
+.apply{background:var(--blue);color:#fff;border-radius:10px;padding:6px 12px;text-decoration:none;font-weight:600}
+.status{padding:20px;text-align:center;color:var(--muted);grid-column:1/-1}
+.spin{width:34px;height:34px;border:4px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 10px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.more{text-align:center;margin-top:12px}
+.note{background:#fff8d6;border-radius:12px;padding:12px 14px;font-size:14px;margin-top:16px}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.res a{display:block;border:2px solid var(--line);border-radius:12px;padding:12px;text-decoration:none;color:var(--ink)}
+.res a:hover{border-color:var(--blue)}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 30px}
+@media (max-width:820px){.two{grid-template-columns:1fr}.qr{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <div>
+      <div class="brand">Yozgat Bozok Üniversitesi · Boğazlıyan MYO</div>
+      <h1>Erasmus+ <span>Rotam</span></h1>
+      <p class="lead">Bölümünü ve ilgi alanlarını seç, sana uygun ülkeyi, orada neler yapabileceğini ve staj alabileceğin kurumları bulalım.</p>
+    </div>
+    <div class="qr"><img id="qr" alt="Siteye git QR kodu">Telefonundan katıl</div>
+  </div>
+  <svg class="stars" viewBox="0 0 200 200" aria-hidden="true"><g fill="#ffcc00" id="starring"></g></svg>
+</header>
+
+<main>
+  <div class="steps"><div class="on"></div><div></div><div></div><div></div></div>
+
+  <section class="panel show" id="p1">
+    <h2>1. Bölümün hangisi?</h2>
+    <p class="sub">Boğazlıyan MYO programları</p>
+    <div class="grid" id="programs"></div>
+  </section>
+
+  <section class="panel" id="p2">
+    <h2>2. Nelerden hoşlanırsın?</h2>
+    <p class="sub">İstediğin kadar seç. Ne kadar çok seçersen öneri o kadar isabetli olur.</p>
+    <div class="chips" id="interests"></div>
+    <div class="row">
+      <button class="btn ghost" onclick="go(1)">← Geri</button>
+      <button class="btn" id="findBtn" disabled onclick="showCountries()">Ülkemi bul</button>
+    </div>
+  </section>
+
+  <section class="panel" id="p3">
+    <h2>3. Sana en uygun ülkeler</h2>
+    <p class="sub" id="p3sub"></p>
+    <div class="countries" id="countries"></div>
+    <div class="row">
+      <button class="btn ghost" onclick="go(2)">← İlgileri değiştir</button>
+      <span>veya başka bir ülke seç:</span>
+      <select id="anyCountry" onchange="if(this.value)openCountry(this.value)"></select>
+    </div>
+  </section>
+
+  <section class="panel" id="p4">
+    <h2 id="p4title"></h2>
+    <p class="sub" id="p4sub"></p>
+
+    <div class="hero-apply">
+      <div><b>Bu rota hoşuna gitti mi?</b><p>Başvuru ve hibe bilgisi için Boğazlıyan MYO Değişim Programları sayfasına git.</p></div>
+      <a class="btn applyLink" target="_blank" rel="noopener">Başvur</a>
+    </div>
+
+    <div class="two">
+      <div class="box"><h3>Orada ne yapabilirsin?</h3><ul id="doList"></ul></div>
+      <div class="box career"><h3>Kariyer olanakları</h3><ul id="careerList"></ul></div>
+    </div>
+
+    <h3>Önerilen kurumlar</h3>
+    <div class="chips cities" id="cities"></div>
+    <div class="tabs">
+      <button class="chip on" id="tabJob" onclick="setTab('job')">Staj yerleri</button>
+      <button class="chip" id="tabEdu" onclick="setTab('edu')">Eğitim kurumları</button>
+    </div>
+    <div class="inst" id="list"></div>
+    <div class="more" id="more"></div>
+    <div class="note">Kurumlar OpenStreetMap'ten canlı çekiliyor ve fikir vermek için listeleniyor. Hepsi Erasmus+ ortağı değil. Başvurmadan önce bölüm Erasmus temsilcinle görüş.</div>
+
+    <h3 style="margin:22px 0 0">Hazırlık için faydalı siteler</h3>
+    <div class="res">
+      <a href="https://erasmusintern.org" target="_blank" rel="noopener"><b>ErasmusIntern</b><br><small>Avrupa genelinde staj ilanları</small></a>
+      <a href="https://europass.europa.eu/tr" target="_blank" rel="noopener"><b>Europass</b><br><small>Avrupa formatında CV hazırla</small></a>
+      <a href="https://erasmus-plus.ec.europa.eu/tr" target="_blank" rel="noopener"><b>Erasmus+ resmi site</b><br><small>Program hakkında her şey</small></a>
+    </div>
+    <div class="row">
+      <button class="btn ghost" onclick="go(3)">← Ülkelere dön</button>
+      <button class="btn ghost" onclick="restart()">Baştan başla</button>
+      <a class="btn applyLink" target="_blank" rel="noopener">Başvur</a>
+    </div>
+  </section>
+</main>
+
+<footer>Boğazlıyan MYO Erasmus+ Birimi · Birim Erasmus Temsilcisi: Öğr. Gör. Anıl KUŞ · <a href="mailto:anil.kus@yobu.edu.tr">anil.kus@yobu.edu.tr</a><br>
+  <small>Kurum verileri © OpenStreetMap katkıcıları · Ülke bilgileri REST Countries</small>
+</footer>
+
+<script>
+/* ====== AYARLAR ====== */
+const APPLY_URL = "https://bozok.edu.tr/okul/bogazliyan-myo/sayfa/degisim-programlari-koordinatorlugu/12771";
+
+/* ====== VERİLER (kolayca düzenlenebilir) ====== */
+const PROGRAMS = {
+  bp: {name:"Bilgisayar Programcılığı", note:"Örgün ve Uzaktan",
+    aff:["DE","EE","NL","FI","IE","SE","PL","LT"],
+    sel:['["office"~"^(it|telecommunication|research)$"]'],
+    doing:["Yazılım firmasında web veya mobil uygulama geliştirme ekibine katıl","Gerçek projelerde test, hata ayıklama ve sürüm süreçlerini öğren","Agile/Scrum toplantılarında uluslararası bir ekiple çalış","GitHub portfolyona yurt dışı projeleri ekle","Teknik İngilizceni iş ortamında geliştir"],
+    careers:["Junior yazılım geliştirici (web / mobil)","Yazılım test uzmanı (QA)","BT destek ve sistem teknisyeni","Oyun geliştirme asistanı","Uzaktan çalışma ile yurt dışı şirketlere freelance iş"]},
+  bva: {name:"Büyük Veri Analistliği", note:"Ön lisans",
+    aff:["DE","NL","IE","EE","FI","LU","PL"],
+    sel:['["office"~"^(it|research|financial|consulting|statistics)$"]'],
+    doing:["Şirket verilerini temizleme ve raporlama süreçlerinde görev al","Python, SQL ve Power BI ile gerçek veri setleri üzerinde çalış","Araştırma kurumlarında anket ve istatistik projelerine destek ol","Dashboard hazırlayıp ekibine sun","Veri gizliliği (GDPR) kurallarını yerinde öğren"],
+    careers:["Junior veri analisti","İş zekası (BI) raporlama uzmanı","Veri etiketleme ve kalite uzmanı","Pazar araştırma asistanı","Dikey geçişle istatistik veya bilgisayar mühendisliği"]},
+  el: {name:"Elektronik Teknolojisi", note:"Ön lisans",
+    aff:["DE","NL","CZ","AT","FI","SK"],
+    sel:['["office"~"^(engineer|telecommunication|research)$"]','["craft"~"^(electronics_repair|electrician)$"]'],
+    doing:["Elektronik kart montajı, lehimleme ve test işlemlerinde çalış","Otomasyon ve PLC sistemlerinin bakımına katıl","Arıza tespiti ve teknik servis süreçlerini öğren","Avrupa iş güvenliği standartlarını yerinde gör","Mühendislik ofisinde teknik çizim ve dokümantasyon hazırla"],
+    careers:["Elektronik teknikeri","Otomasyon / PLC teknisyeni","Teknik servis uzmanı","Üretim hattı kalite kontrol teknikeri","Yenilenebilir enerji sistemleri teknisyeni"]},
+  gida: {name:"Gıda Teknolojisi", note:"Ön lisans",
+    aff:["IT","FR","NL","DK","ES","BE","GR"],
+    sel:['["craft"~"^(bakery|confectionery|cheese|caterer)$"]','["office"="research"]'],
+    doing:["Gıda üretim tesisinde kalite kontrol analizlerine katıl","Peynir, unlu mamul veya şekerleme üretimini yerinde öğren","HACCP ve ISO 22000 uygulamalarını gerçek ortamda gör","Ar-Ge laboratuvarında yeni ürün denemelerinde görev al","Avrupa gıda etiketleme kurallarını öğren"],
+    careers:["Gıda teknikeri","Kalite kontrol uzmanı","Gıda laboratuvarı teknisyeni","Üretim planlama sorumlusu","Dikey geçişle gıda mühendisliği"]},
+  lab: {name:"Laborant ve Veteriner Sağlık", note:"Ön lisans",
+    aff:["NL","DK","IE","PL","DE","HU"],
+    sel:['["amenity"~"^(veterinary|animal_shelter)$"]','["healthcare"="laboratory"]'],
+    doing:["Veteriner kliniğinde muayene ve tedavi süreçlerine destek ol","Laboratuvarda numune hazırlama ve analiz yap","Modern süt çiftliklerinde hayvan sağlığı uygulamalarını gör","Hayvan barınaklarında bakım ve rehabilitasyonda görev al","Hayvan refahı standartlarını yerinde öğren"],
+    careers:["Veteriner sağlık teknikeri","Laboratuvar teknisyeni","Çiftlik ve sürü sağlığı sorumlusu","İlaç ve yem firmalarında saha temsilcisi","Dikey geçişle veteriner fakültesi"]},
+  orman: {name:"Ormancılık ve Orman Ürünleri", note:"Ön lisans",
+    aff:["FI","SE","AT","SI","LV","NO","SK"],
+    sel:['["office"="forestry"]','["amenity"="ranger_station"]','["craft"~"^(sawmill|carpenter)$"]','["shop"="garden_centre"]'],
+    doing:["Orman işletmesinde envanter ve ağaç ölçüm çalışmalarına katıl","Fidanlıkta üretim ve bakım işlerinde görev al","Kereste ve ahşap işleme tesislerini yerinde öğren","Milli park ve koruma alanlarında saha çalışması yap","Orman yangını önleme uygulamalarını gör"],
+    careers:["Orman muhafaza / orman teknikeri","Fidanlık ve peyzaj teknikeri","Ahşap ve mobilya sektöründe üretim sorumlusu","Doğa koruma projelerinde saha görevlisi","Dikey geçişle orman mühendisliği"]},
+  res: {name:"Mimari Restorasyon", note:"Ön lisans",
+    aff:["IT","GR","PT","ES","HR","CZ","MT"],
+    sel:['["office"="architect"]','["craft"~"^(stonemason|carpenter|restoration)$"]','["tourism"="museum"]'],
+    doing:["Tarihi yapıların rölöve (ölçüm) çalışmalarına katıl","Taş, ahşap ve sıva restorasyonu atölyelerinde uygulama yap","Mimarlık ofisinde restorasyon projesi çizimlerine destek ol","Müzelerde koruma ve bakım süreçlerini gör","Avrupa'nın UNESCO alanlarında yerinde deneyim kazan"],
+    careers:["Restorasyon teknikeri","Rölöve ve teknik çizim uzmanı","Müze koruma asistanı","Yapı denetim ve şantiye teknikeri","Dikey geçişle mimarlık veya restorasyon"]}
+};
+const EDU_SEL = '["amenity"~"^(university|college)$"]';
+
+const INTERESTS = [
+  ["tech","","Teknoloji"],["games","","Oyun"],["football","","Futbol / Spor"],["music","","Müzik"],
+  ["food","","Yemek kültürü"],["history","","Tarih"],["nature","","Doğa"],["sea","","Deniz"],
+  ["winter","","Kar / Kış"],["art","","Sanat / Tasarım"],["photo","","Fotoğraf"],["cycling","","Bisiklet"],
+  ["animals","","Hayvanlar"],["budget","","Uygun yaşam maliyeti"],["english","","İngilizce rahat konuşulsun"],["startup","","Girişimcilik"]
+];
+
+/* g: yaşam maliyeti grubu (1 yüksek, 3 uygun) · t: ilgi etiketleri · c: şehirler [ad, enlem, boylam] */
+const COUNTRIES = [
+ {k:"AT",n:"Avusturya",g:2,t:["music","nature","winter","art","history"],c:[["Viyana",48.2082,16.3738],["Graz",47.0707,15.4395]]},
+ {k:"BE",n:"Belçika",g:2,t:["food","art","history","cycling"],c:[["Brüksel",50.8503,4.3517],["Gent",51.0543,3.7174]]},
+ {k:"BG",n:"Bulgaristan",g:3,t:["sea","nature","history","winter"],c:[["Sofya",42.6977,23.3219],["Filibe",42.1354,24.7453]]},
+ {k:"HR",n:"Hırvatistan",g:3,t:["sea","nature","history","photo"],c:[["Zagreb",45.8150,15.9819],["Split",43.5081,16.4402]]},
+ {k:"CZ",n:"Çekya",g:3,t:["history","art","tech","music"],c:[["Prag",50.0755,14.4378],["Brno",49.1951,16.6068]]},
+ {k:"DK",n:"Danimarka",g:1,t:["cycling","art","food","english","animals","startup"],c:[["Kopenhag",55.6761,12.5683],["Aarhus",56.1629,10.2039]]},
+ {k:"EE",n:"Estonya",g:3,t:["tech","startup","nature","games"],c:[["Tallinn",59.4370,24.7536],["Tartu",58.3780,26.7290]]},
+ {k:"FI",n:"Finlandiya",g:1,t:["nature","tech","games","winter","english"],c:[["Helsinki",60.1699,24.9384],["Tampere",61.4978,23.7610]]},
+ {k:"FR",n:"Fransa",g:2,t:["food","art","history","football","photo"],c:[["Paris",48.8566,2.3522],["Lyon",45.7640,4.8357]]},
+ {k:"DE",n:"Almanya",g:2,t:["tech","football","music","history","startup"],c:[["Berlin",52.5200,13.4050],["Münih",48.1351,11.5820],["Hamburg",53.5511,9.9937]]},
+ {k:"GR",n:"Yunanistan",g:2,t:["history","sea","food","photo"],c:[["Atina",37.9838,23.7275],["Selanik",40.6401,22.9444]]},
+ {k:"HU",n:"Macaristan",g:3,t:["music","history","food","animals"],c:[["Budapeşte",47.4979,19.0402],["Debrecen",47.5316,21.6273]]},
+ {k:"IS",n:"İzlanda",g:1,t:["nature","photo","winter","english"],c:[["Reykjavik",64.1466,-21.9426],["Akureyri",65.6885,-18.1262]]},
+ {k:"IE",n:"İrlanda",g:1,t:["tech","music","nature","english","animals","startup"],c:[["Dublin",53.3498,-6.2603],["Cork",51.8985,-8.4756]]},
+ {k:"IT",n:"İtalya",g:2,t:["food","history","art","football","sea","photo"],c:[["Roma",41.9028,12.4964],["Milano",45.4642,9.1900],["Floransa",43.7696,11.2558]]},
+ {k:"LV",n:"Letonya",g:3,t:["nature","history","sea"],c:[["Riga",56.9496,24.1052],["Jelgava",56.6511,23.7214]]},
+ {k:"LI",n:"Lihtenştayn",g:1,t:["nature","winter"],c:[["Vaduz",47.1410,9.5209]]},
+ {k:"LT",n:"Litvanya",g:3,t:["tech","history","startup"],c:[["Vilnius",54.6872,25.2797],["Kaunas",54.8985,23.9036]]},
+ {k:"LU",n:"Lüksemburg",g:1,t:["history","cycling","startup"],c:[["Lüksemburg",49.6116,6.1319]]},
+ {k:"MT",n:"Malta",g:2,t:["sea","history","english","photo"],c:[["Valletta",35.8989,14.5146]]},
+ {k:"NL",n:"Hollanda",g:2,t:["tech","cycling","english","animals","art","startup"],c:[["Amsterdam",52.3676,4.9041],["Rotterdam",51.9244,4.4777],["Wageningen",51.9692,5.6654]]},
+ {k:"NO",n:"Norveç",g:1,t:["nature","winter","sea","photo","english"],c:[["Oslo",59.9139,10.7522],["Bergen",60.3913,5.3221]]},
+ {k:"PL",n:"Polonya",g:3,t:["history","games","tech","football","animals"],c:[["Varşova",52.2297,21.0122],["Krakov",50.0647,19.9450]]},
+ {k:"PT",n:"Portekiz",g:2,t:["sea","football","food","photo","history"],c:[["Lizbon",38.7223,-9.1393],["Porto",41.1579,-8.6291]]},
+ {k:"RO",n:"Romanya",g:3,t:["nature","tech","history"],c:[["Bükreş",44.4268,26.1025],["Cluj-Napoca",46.7712,23.6236]]},
+ {k:"SK",n:"Slovakya",g:3,t:["nature","winter","history"],c:[["Bratislava",48.1486,17.1077],["Košice",48.7164,21.2611]]},
+ {k:"SI",n:"Slovenya",g:3,t:["nature","winter","cycling","photo"],c:[["Ljubljana",46.0569,14.5058],["Maribor",46.5547,15.6459]]},
+ {k:"ES",n:"İspanya",g:2,t:["football","sea","food","music","art"],c:[["Madrid",40.4168,-3.7038],["Barselona",41.3874,2.1686],["Valensiya",39.4699,-0.3763]]},
+ {k:"SE",n:"İsveç",g:1,t:["tech","nature","art","games","english"],c:[["Stokholm",59.3293,18.0686],["Göteborg",57.7089,11.9746]]},
+ {k:"MK",n:"Kuzey Makedonya",g:3,t:["history","nature"],c:[["Üsküp",41.9981,21.4254],["Ohri",41.1231,20.8016]]},
+ {k:"RS",n:"Sırbistan",g:3,t:["music","football","history"],c:[["Belgrad",44.7866,20.4489],["Novi Sad",45.2671,19.8335]]}
+];
+
+const LABELS = {
+  office:{it:"BT / Yazılım firması",telecommunication:"Telekom firması",research:"Araştırma kurumu",engineer:"Mühendislik ofisi",architect:"Mimarlık ofisi",forestry:"Orman işletmesi",financial:"Finans firması",consulting:"Danışmanlık firması",statistics:"İstatistik kurumu"},
+  craft:{electronics_repair:"Elektronik servis",electrician:"Elektrik-elektronik atölyesi",bakery:"Fırın / gıda üretimi",confectionery:"Şekerleme üretimi",cheese:"Peynir üretimi",caterer:"Toplu yemek üretimi",sawmill:"Kereste işletmesi",carpenter:"Ahşap atölyesi",stonemason:"Taş işçiliği atölyesi",restoration:"Restorasyon atölyesi"},
+  amenity:{university:"Üniversite",college:"Meslek okulu / kolej",veterinary:"Veteriner kliniği",animal_shelter:"Hayvan barınağı",ranger_station:"Orman / park istasyonu"},
+  healthcare:{laboratory:"Laboratuvar"}, tourism:{museum:"Müze"}, shop:{garden_centre:"Fidan / bahçe merkezi"}
+};
+const GROUP_TXT = {1:"Yaşam maliyeti yüksek",2:"Yaşam maliyeti orta",3:"Yaşam maliyeti uygun"};
+const OVERPASS = ["https://overpass-api.de/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.private.coffee/api/interpreter"];
+const PAGE = 12;
+
+/* ====== DURUM ====== */
+const $ = s =>document.querySelector(s);
+const esc = s =>String(s ?? "").replace(/[&<>"']/g, c =>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const state = {program:null, interests:new Set(), country:null, tab:"job", items:[], shown:PAGE};
+let reqId = 0;
+
+/* ====== BAŞLANGIÇ ====== */
+document.querySelectorAll(".applyLink").forEach(a =>a.href = APPLY_URL);
+$("#qr").src = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=" + encodeURIComponent(location.href.split("#")[0]);
+(function stars(){ let g=""; for(let i=0;i<12;i++){const a=i*Math.PI/6; g+=`<circle cx="${100+80*Math.cos(a)}" cy="${100+80*Math.sin(a)}" r="9"/>`;} $("#starring").innerHTML=g; })();
+
+$("#programs").innerHTML = Object.entries(PROGRAMS).map(([k,p]) =>
+  `<button class="prog" onclick="pickProgram('${k}')"><b>${esc(p.name)}</b><small>${esc(p.note)}</small></button>`).join("");
+
+$("#interests").innerHTML = INTERESTS.map(([k,e,l]) =>
+  `<button class="chip" data-k="${k}" onclick="toggleInterest(this)">${esc(l)}</button>`).join("");
+
+$("#anyCountry").innerHTML = `<option value="">Ülke listesi…</option>` +
+  [...COUNTRIES].sort((a,b)=>a.n.localeCompare(b.n,"tr")).map(c=>`<option value="${c.k}">${esc(c.n)}</option>`).join("");
+
+/* ====== ADIMLAR ====== */
+function go(n){
+  document.querySelectorAll(".panel").forEach((p,i)=>p.classList.toggle("show", i===n-1));
+  document.querySelectorAll(".steps div").forEach((d,i)=>d.classList.toggle("on", i<n));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function restart(){
+  state.program=null; state.interests.clear();
+  document.querySelectorAll("#interests .chip").forEach(c=>c.classList.remove("on"));
+  $("#findBtn").disabled = true; go(1);
+}
+function pickProgram(k){ state.program=k; go(2); }
+function toggleInterest(el){
+  const k = el.dataset.k;
+  state.interests.has(k) ? state.interests.delete(k) : state.interests.add(k);
+  el.classList.toggle("on");
+  $("#findBtn").disabled = state.interests.size === 0;
+}
+
+/* ====== ÜLKE EŞLEŞTİRME ====== */
+function scoreCountry(c){
+  const p = PROGRAMS[state.program]; let s = 0; const why = [];
+  if (p.aff.includes(c.k)) { s += 2; why.push("Alanında güçlü"); }
+  for (const k of state.interests) {
+    const it = INTERESTS.find(x=>x[0]===k);
+    if (k === "budget") { if (c.g === 3) { s += 1.5; why.push(it[2]); } continue; }
+    if (c.t.includes(k)) { s += 1; why.push(it[2]); }
+  }
+  return {c, s: s + Math.random()*0.2, why};
+}
+function showCountries(){
+  const max = state.interests.size + 2;
+  const top = COUNTRIES.map(scoreCountry).sort((a,b)=>b.s-a.s).slice(0,3);
+  $("#p3sub").textContent = `${PROGRAMS[state.program].name} öğrencisi olarak ilgi alanlarına göre öneriler. Birine tıkla.`;
+  $("#countries").innerHTML = top.map((r,i)=>{
+    const fit = Math.min(99, Math.round(55 + (r.s/max)*45));
+    return`<div class="cc" onclick="openCountry('${r.c.k}')">
+      <div class="flag" style="background-image:url(https://flagcdn.com/w640/${r.c.k.toLowerCase()}.png)">
+        <span class="rank">#${i+1}</span><span class="fit">%${fit} uyum</span></div>
+      <div class="body"><h3>${esc(r.c.n)}</h3>
+        <div class="tags">${r.why.map(w=>`<span class="tag">${esc(w)}</span>`).join("") || '<span class="tag">Keşfetmeye değer</span>'}</div>
+        <div class="facts" id="f-${r.c.k}">${GROUP_TXT[r.c.g]}</div></div></div>`;
+  }).join("");
+  go(3);
+  loadFacts(top.map(r=>r.c));
+}
+async function loadFacts(list){
+  try{
+    const r = await fetch(`https://restcountries.com/v3.1/alpha?codes=${list.map(c=>c.k).join(",")}&fields=cca2,capital,population,languages,currencies`);
+    if(!r.ok) return;
+    for (const d of await r.json()) {
+      const el = $("#f-"+d.cca2); if(!el) continue;
+      const c = COUNTRIES.find(x=>x.k===d.cca2);
+      const lang = Object.values(d.languages||{}).slice(0,2).join(", ");
+      const cur = Object.values(d.currencies||{}).map(x=>x.name).join(", ");
+      el.innerHTML = `Başkent: ${esc((d.capital||[])[0]||"-")}<br>Nüfus: ${Number(d.population).toLocaleString("tr-TR")}<br>Dil: ${esc(lang)}<br>Para: ${esc(cur)}<br>${GROUP_TXT[c.g]}`;
+    }
+  }catch(e){ /* bilgi kartı opsiyonel */ }
+}
+
+/* ====== ÜLKE DETAYI ====== */
+function openCountry(k){
+  const p = PROGRAMS[state.program];
+  state.country = COUNTRIES.find(c=>c.k===k);
+  $("#anyCountry").value = "";
+  $("#p4title").innerHTML = `<img src="https://flagcdn.com/w80/${k.toLowerCase()}.png" style="height:26px;vertical-align:-3px;border-radius:4px"> ${esc(state.country.n)} · ${esc(p.name)}`;
+  $("#p4sub").textContent = p.aff.includes(k)
+    ? `${state.country.n}, ${p.name} alanında güçlü ülkelerden biri. ${GROUP_TXT[state.country.g]}.`
+    : `${state.country.n} senin ilgi alanlarınla uyumlu. ${GROUP_TXT[state.country.g]}.`;
+  $("#doList").innerHTML = p.doing.map(x=>`<li>${esc(x)}</li>`).join("");
+  $("#careerList").innerHTML = p.careers.map(x=>`<li>${esc(x)}</li>`).join("");
+  $("#cities").innerHTML = state.country.c.map((c,i)=>`<button class="chip${i?"":" on"}" onclick="pickCity(${i},this)">${esc(c[0])}</button>`).join("");
+  go(4);
+  pickCity(0);
+}
+function pickCity(i, el){
+  if(el){ document.querySelectorAll("#cities .chip").forEach(c=>c.classList.remove("on")); el.classList.add("on"); }
+  const [name, lat, lon] = state.country.c[i];
+  loadPlaces(name, lat, lon);
+}
+
+/* ====== KURUMLAR (OpenStreetMap Overpass) ====== */
+async function overpass(q){
+  for (const ep of OVERPASS){
+    try{
+      const r = await fetch(ep,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"data="+encodeURIComponent(q)});
+      if(r.ok) return await r.json();
+    }catch(e){}
+  }
+  throw new Error("Kurum sunucusuna ulaşılamadı");
+}
+function buildQuery(lat, lon, radius){
+  const sels = [...PROGRAMS[state.program].sel, EDU_SEL];
+  return`[out:json][timeout:25];(${sels.map(s=>`nwr${s}["name"](around:${radius},${lat},${lon});`).join("")});out tags 150;`;
+}
+function labelOf(t){
+  for (const key in LABELS) if (t[key] && LABELS[key][t[key]]) return LABELS[key][t[key]];
+  return"Kurum";
+}
+async function loadPlaces(city, lat, lon){
+  const my = ++reqId;
+  $("#more").innerHTML = "";
+  $("#list").innerHTML = `<div class="status"><div class="spin"></div>${esc(city)} için kurumlar aranıyor…</div>`;
+  try{
+    let data = await overpass(buildQuery(lat,lon,12000));
+    if ((data.elements||[]).length< 6) data = await overpass(buildQuery(lat,lon,35000));
+    if (my !== reqId) return;
+    const seen = new Set();
+    state.items = (data.elements||[]).map(e=>{
+      const t = e.tags||{};
+      const web = t.website || t["contact:website"] || t.url || "";
+      return {
+        name: t["name:en"] || t.name, type: labelOf(t),
+        edu: /^(university|college)$/.test(t.amenity||""),
+        web: web && !/^https?:\/\//.test(web) ? "https://"+web : web,
+        mail: t.email || t["contact:email"] || "",
+        addr: [t["addr:street"], t["addr:housenumber"], t["addr:city"]].filter(Boolean).join(" ") || city
+      };
+    }).filter(x=>{ if(seen.has(x.name)) return false; seen.add(x.name); return true; })
+      .sort((a,b)=>(b.web?1:0)-(a.web?1:0));
+    state.shown = PAGE;
+    render();
+  }catch(err){
+    if (my !== reqId) return;
+    $("#list").innerHTML = `<div class="status"> ${esc(err.message)}. Birkaç saniye sonra şehre tekrar tıkla.</div>`;
+  }
+}
+function setTab(t){
+  state.tab = t; state.shown = PAGE;
+  $("#tabJob").classList.toggle("on", t==="job");
+  $("#tabEdu").classList.toggle("on", t==="edu");
+  render();
+}
+function render(){
+  const all = state.items.filter(x =>state.tab==="edu" ? x.edu : !x.edu);
+  if(!all.length){
+    $("#list").innerHTML = `<div class="status">Bu şehirde bu kategoride kayıt bulunamadı. Diğer şehri veya sekmeyi dene.</div>`;
+    $("#more").innerHTML = "";
+    return;
+  }
+  $("#list").innerHTML = all.slice(0, state.shown).map(x=>`
+    <div class="item"><b>${esc(x.name)}</b><span class="k">${esc(x.type)} · ${esc(x.addr)}</span>
+      <div class="links">
+        ${x.web?`<a href="${esc(x.web)}" target="_blank" rel="noopener">Web</a>`:""}
+        ${x.mail?`<a href="mailto:${esc(x.mail)}">E-posta</a>`:""}
+        <a class="apply" href="${APPLY_URL}" target="_blank" rel="noopener">Başvur</a>
+      </div></div>`).join("");
+  $("#more").innerHTML = all.length >state.shown
+    ? `<button class="btn ghost" onclick="state.shown+=PAGE;render()">Daha fazla göster (${all.length - state.shown})</button>` : "";
+}
+</script>
+</body>
+</html>
