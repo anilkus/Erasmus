@@ -108,6 +108,10 @@ select{font:inherit;padding:10px;border-radius:10px;border:2px solid var(--line)
 @keyframes pulse{50%{opacity:.25}}
 .live .lb li{background:#fff;font-size:16px;padding:10px 12px}
 @media (max-width:820px){.home{grid-template-columns:1fr}}
+.dy{display:flex;gap:6px;font-size:13px;font-weight:600}
+.dy .d{background:#dff5ea;color:#0d7a50;border-radius:6px;padding:2px 7px}
+.dy .y{background:#fde4e4;color:#b33;border-radius:6px;padding:2px 7px}
+.lb b{min-width:52px;text-align:right}
 .warn{background:#ffe3e3;border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:14px}
 #screen{display:none;min-height:100vh;background:radial-gradient(circle at 80% 10%,#2c56c9 0,var(--deep) 65%);color:#fff;padding:30px 40px}
 body.screen header,body.screen main,body.screen footer{display:none}
@@ -159,7 +163,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 30px}
     <div class="home">
       <div>
         <h2>Erasmus+ Yarışması</h2>
-        <p class="sub">10 soru, her biri 15 saniye. Doğru ve hızlı cevap daha çok puan getirir. Bitirenler hemen sıralamaya girer!</p>
+        <p class="sub">10 soru, her biri 15 saniye. Doğru cevap puan getirir, ne kadar hızlı cevaplarsan o kadar çok puan alırsın. Bitirenler hemen sıralamaya girer!</p>
         <div class="join">
           <input class="input" id="pname" maxlength="24" placeholder="Adın Soyadın" autocomplete="off">
           <select class="input" id="pprog"></select>
@@ -596,9 +600,11 @@ function answer(j){
   const q = game.qs[game.i];
   const left = Math.max(0, Q_TIME - (performance.now()-game.start)/1000);
   const ok = j>=0 && q.opts[j]===q.ans;
-  if (ok) { game.correct++; game.score += 500 + Math.round(500*left/Q_TIME); }
+  const used = Q_TIME - left;
+  const gain = ok ? 300 + Math.round(700*left/Q_TIME) : 0;
+  if (ok) { game.correct++; game.score += gain; }
   document.querySelectorAll(".opt").forEach((b,k)=>b.classList.add(q.opts[k]===q.ans ? "right" : "dim"));
-  $("#qscore").textContent = (ok ? "Doğru!" : j<0 ? "Süre doldu" : "Yanlış") + ` · ${game.score} puan`;
+  $("#qscore").textContent = (ok ? `Doğru! +${gain} (${used.toFixed(1)} sn)` : j<0 ? "Süre doldu" : "Yanlış") + ` · ${game.score} puan`;
   game.i++; setTimeout(nextQ, 1500);
 }
 async function finish(){
@@ -607,7 +613,7 @@ async function finish(){
   $("#rscore").textContent = game.score + " puan";
   $("#rinfo").textContent = `${game.qs.length} sorudan ${game.correct} doğru.`;
   $("#lbMine").innerHTML = `<li>Sıralama yükleniyor…</li>`;
-  game.id = await saveScore({name:game.name, prog:PROGRAMS[game.prog].name, score:game.score, correct:game.correct, t:Date.now()});
+  game.id = await saveScore({name:game.name, prog:PROGRAMS[game.prog].name, score:game.score, correct:game.correct, total:game.qs.length, t:Date.now()});
   game.done = true; refreshNow();
 }
 function goRoute(){ state.program = game.prog; go(2); }
@@ -640,7 +646,8 @@ function board(obj){
   }
   return Object.values(best).sort((a,b)=>b.score-a.score || a.t-b.t);
 }
-const row = (x,i,me) => `<li class="${i===me?"me":""}"><span class="r">${i+1}</span><span class="nm">${esc(x.name)} <small>${esc(x.prog)}</small></span><b>${x.score}</b></li>`;
+const dy = x => { const c = +x.correct||0, t = +x.total||10; return `<span class="dy"><span class="d">${c} D</span><span class="y">${t-c} Y</span></span>`; };
+const row = (x,i,me) => `<li class="${i===me?"me":""}"><span class="r">${i+1}</span><span class="nm">${esc(x.name)} <small>${esc(x.prog)}</small></span>${dy(x)}<b>${x.score}</b></li>`;
 const myIndex = list => game.done ? list.findIndex(x => String(x.name).toLowerCase() === game.name.toLowerCase()) : -1;
 function renderLive(list){
   if (!list) { $("#lbHome").innerHTML = `<li>Sıralama yüklenemedi, tekrar deneniyor…</li>`; return; }
@@ -674,10 +681,10 @@ function renderScreen(list){
   $("#podium").innerHTML = [1,0,2].map(i=>{
     const x = top[i];
     return `<div class="pod p${i+1}"><div class="pl">${i+1}</div>${x
-      ? `<div class="pn">${esc(x.name)}</div><div class="ps">${x.score} puan</div><div class="ps" style="font-size:15px">${esc(x.prog)}</div>`
+      ? `<div class="pn">${esc(x.name)}</div><div class="ps">${x.score} puan · ${+x.correct||0} D / ${(+x.total||10)-(+x.correct||0)} Y</div><div class="ps" style="font-size:15px">${esc(x.prog)}</div>`
       : `<div class="ps">Bekleniyor…</div>`}</div>`;
   }).join("");
-  $("#scList").innerHTML = list.slice(3,15).map((x,i)=>`<div><span>${i+4}. ${esc(x.name)}</span><b>${x.score}</b></div>`).join("");
+  $("#scList").innerHTML = list.slice(3,15).map((x,i)=>`<div><span>${i+4}. ${esc(x.name)}</span><span>${+x.correct||0} D / ${(+x.total||10)-(+x.correct||0)} Y · <b>${x.score}</b></span></div>`).join("");
   $("#scMeta").textContent = `${list.length} yarışmacı · canlı güncelleniyor`;
 }
 function initScreen(){
